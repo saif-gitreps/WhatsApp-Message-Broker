@@ -1,9 +1,11 @@
 import { EventEmitter } from "events";
-import { Client, LocalAuth, Message } from "whatsapp-web.js";
+import { Client, Message } from "whatsapp-web.js";
+import pkg from "whatsapp-web.js";
 import { AppError, WhatsAppStatus } from "../types/shared.js";
 import config from "../config.js";
 import logger from "../utils/logger.js";
 import qrcode from "qrcode";
+const { LocalAuth } = pkg;
 
 class WhatsAppService extends EventEmitter {
    private client: Client | null = null;
@@ -13,13 +15,15 @@ class WhatsAppService extends EventEmitter {
    private readonly RECONNECT_DELAY_MS = 5_000;
 
    public initialize(): void {
-      logger.info("Initialising WhatsApp client…");
+      logger.info("Initialising WhatsApp client");
 
       this.client = new Client({
          authStrategy: new LocalAuth({
             dataPath: config.whatsapp.sessionDataPath,
          }),
          puppeteer: {
+            // TODO: ADD A REMAINDER IN README THAT the BELOW key-pair is optional and you may not need this to run the proj.
+            executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
             args: ["--no-sandbox", "--disable-setuid-sandbox"],
          },
       });

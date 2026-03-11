@@ -8,10 +8,8 @@ import { getStatus, send } from "../controllers/message.controller.js";
 
 const router = Router();
 
-router.use(rateLimit);
-
 router.get("/status", getStatus);
 
-router.post("/message", sendMessageRules, handleValidationErrors, send);
+router.post("/message/send", sendMessageRules, handleValidationErrors, send);
 
 export default router;
